@@ -106,6 +106,38 @@ There are two three ways on how to run the application:
     http://your-deployment-url.com
     ```
 
+### How to build the application
+
+To build the application, you can use the following commands:
+
+```bash
+# Clone the Repository
+git clone https://gitlab.com/woofi4/Projects/learning-app.git
+
+# Navigate to the project directory
+cd learning-app/app/client
+
+# Install dependencies
+npm install
+
+# Build the frontend
+npm run build
+
+# go back to the root app directory
+cd ..
+
+# Build the Docker image
+docker build -t learning-app:local .
+
+# Tag the Docker image
+docker tag learning-app:local example-registry/learning-app:v1.0.0
+docker tag learning-app:local example-registry/learning-app:latest
+
+# Push the Docker image to the registry
+docker push example-registry/learning-app:v1.0.0
+docker push example-registry/learning-app:latest
+```
+
 <!-- markdownlint-disable -->
 <div style="background-color: #cce5ff; padding: 10px; border-radius: 5px; border: 1px solid #004085;">
 <strong>Info:</strong> The above commands are examples and may need to be adjusted based on the specific setup and configuration of the application. Always refer to the official documentation for the most accurate and up-to-date instructions. The placeholder URLs will be later replaced with the correct URLs.
