@@ -22,6 +22,7 @@ The application is designed to help users learn and practice skills, topics and 
 This section will document the development history of the application, including major milestones, challenges faced, and solutions implemented. It will provide insights into the development process and the evolution of the application over time.
 
 **10.02.2026** - Initial project setup and creation of the application overview document. Defined the purpose, key features, and architecture of the application.
+**11.02.2026** - Added use case overview and detailed use case documents.
 
 ## Developer Notes
 

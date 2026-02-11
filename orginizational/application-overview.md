@@ -34,54 +34,8 @@ class User {
     DateTime createdAt
     DateTime updatedAt
     DateTime lastActiveAt
-    STATUS status 
-}
-
-class Logs {
-    LOG_TYPE type
-    String message
-    DateTime timestamp
-    UUID userId
-}
-
-class Course {
-    UUID id
-    String title
-    List<Question> questions
-    String description
-    DateTime createdAt
-    DateTime updatedAt
-}
-
-class Question {
-    UUID id
-    String question
-    String explanation
-    DateTime createdAt
-    DateTime updatedAt
-}
-
-class Answered_Question {
-    UUID id
-    UUID questionId
-    String userAnswer
-    boolean isCorrect
-    DateTime answeredAt
-}
-
-class Results {
-    UUID courseId
-    UUID userID
-    int nr_of_attempts
-    List<Answered_Question> answered_questions
-    DateTime startedAt
-    DateTime finishedAt
-}
-
-enum LOG_TYPE {
-    INFO
-    WARNING
-    ERROR
+    STATUS status
+    ROLE role
 }
 
 enum STATUS {
@@ -91,15 +45,187 @@ enum STATUS {
     IN_COURSE
 }
 
-User "1" -- "0..*" Results : has
-User "1" -- "0..*" Course : enrolled_in
-User "1" -- "0..*" Course : create
-User "1" -- "0..*" Question : create
-Course "1" -- "0..*" Question : contains
-Results "1" -- "0..*" Answered_Question : includes
-Course "1" -- "0..*" Logs : generates
-Question "1" -- "0..*" Logs : generates
-Results "1" -- "0..*" Logs : generates
+enum ROLE {
+    STUDENT
+    INSTRUCTOR
+    ADMIN
+}
+
+class Log {
+    UUID id
+    LOG_TYPE type
+    String message
+    DateTime timestamp
+    UUID userId
+    String entityType
+    UUID entityId
+}
+
+enum LOG_TYPE {
+    INFO
+    WARNING
+    ERROR
+}
+
+class Notification {
+    UUID id
+    UUID userId
+    String message
+    Boolean read
+    DateTime createdAt
+}
+
+class Course {
+    UUID id
+    String title
+    String description
+    DateTime createdAt
+    DateTime updatedAt
+}
+
+class Session {
+    UUID id
+    UUID courseId
+    DateTime availableFrom
+    DateTime availableTo
+    DateTime createdAt
+    DateTime updatedAt
+}
+
+class Enrollment {
+    UUID id
+    UUID userId
+    UUID courseId
+    ENROLLMENT_STATUS status
+    DateTime enrolledAt
+    DateTime completedAt
+    Double progressPercentage
+}
+
+enum ENROLLMENT_STATUS {
+    ACTIVE
+    COMPLETED
+    DROPPED
+}
+
+class Lesson {
+    UUID id
+    UUID sessionId
+    String title
+    String content
+    Integer orderIndex
+    DateTime createdAt
+    DateTime updatedAt
+}
+
+class Resource {
+    UUID id
+    UUID lessonId
+    RESOURCE_TYPE type
+    String url
+    DateTime createdAt
+    DateTime updatedAt
+}
+
+enum RESOURCE_TYPE {
+    VIDEO
+    PDF
+    LINK
+    INFO_TEXT
+}
+
+class LessonProgress {
+    UUID id
+    UUID userId
+    UUID lessonId
+    Boolean completed
+    DateTime completedAt
+}
+
+class Comment {
+    UUID id
+    UUID userId
+    UUID lessonId
+    String content
+    DateTime createdAt
+    DateTime updatedAt
+}
+
+class Quiz {
+    UUID id
+    UUID lessonId
+    String title
+    Integer totalQuestions
+    DateTime createdAt
+    DateTime updatedAt
+}
+
+class Question {
+    UUID id
+    UUID quizId
+    String text
+    QUESTION_TYPE type
+    DateTime createdAt
+    DateTime updatedAt
+}
+
+enum QUESTION_TYPE {
+    MULTIPLE_CHOICE
+    TRUE_FALSE
+    SHORT_ANSWER
+    ESTIMATION
+}
+
+class Answer {
+    UUID id
+    UUID questionId
+    String text
+    Boolean isCorrect
+}
+
+class QuizResult {
+    UUID id
+    UUID userId
+    UUID quizId
+    Double score
+    DateTime completedAt
+}
+
+class Certificate {
+    UUID id
+    UUID userId
+    UUID courseId
+    DateTime issuedAt
+    String certificateUrl
+}
+
+User "1" -- "*" Enrollment : enrolls >
+User "1" -- "*" Log : generates >
+User "1" -- "*" Course : creates >
+User "1" -- "*" Session : creates >
+User "1" -- "*" Lesson : creates >
+User "1" -- "*" Quiz : creates >
+User "1" -- "*" Question : creates >
+User "1" -- "*" Answer: creates >
+User "1" -- "*" Notification : receives >
+User "1" -- "*" LessonProgress : tracks >
+User "1" -- "*" QuizResult : completes >
+User "1" -- "*" Comment : writes >
+
+Course "1" -- "*" Session : has >
+Course "1" -- "*" Enrollment : tracks >
+
+Session "1" -- "*" Lesson : contains >
+
+Lesson "1" -- "*" Resource : includes >
+Lesson "1" -- "*" Quiz : contains >
+Lesson "1" -- "*" LessonProgress : tracked by >
+Lesson "1" -- "*" Comment : commented on >
+
+Quiz "1" -- "*" Question : contains >
+Question "1" -- "*" Answer : provides >
+
+Course "1" -- "*" Certificate : issues >
 
 @enduml
 ```
