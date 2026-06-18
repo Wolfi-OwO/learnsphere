@@ -58,7 +58,7 @@ There two ways how to test the application:
     ```bash
     # Clone the repository
 
-    git clone https://gitlab.com/woofi4/Projects/learning-app.git
+    git clone https://github.com/Wolfi-OwO/LearnSphere.git
 
     # Navigate to the project directory
     cd learning-app/app
@@ -80,7 +80,7 @@ There are two three ways on how to run the application:
 
     ```bash
     # Clone the Repository
-    git clone https://gitlab.com/woofi4/Projects/learning-app.git
+    git clone https://github.com/Wolfi-OwO/LearnSphere.git
 
     # Navigate to the project directory
     cd learning-app/app/client
@@ -136,7 +136,7 @@ To build the application, you can use the following commands:
 
 ```bash
 # Clone the Repository
-git clone https://gitlab.com/woofi4/Projects/learning-app.git
+git clone https://github.com/Wolfi-OwO/LearnSphere.git
 
 # Navigate to the project directory
 cd learning-app/app/client
