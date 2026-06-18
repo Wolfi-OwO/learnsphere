@@ -23,6 +23,29 @@ This section will document the development history of the application, including
 
 **10.02.2026** - Initial project setup and creation of the application overview document. Defined the purpose, key features, and architecture of the application.
 **11.02.2026** - Added use case overview and detailed use case documents.
+**18.06.2026** - Built the first interactive prototype (React + Vite + Bootstrap): main layout, home leaderboard podium, and an editable user profile page with an activity board. Migrated the repository to GitHub.
+
+## Prototype
+
+A clickable frontend prototype lives in [`prototype/`](prototype/). It is built with React 19, Vite and React-Bootstrap.
+
+```bash
+# Clone the repository
+git clone https://github.com/Wolfi-OwO/LearnSphere.git
+
+# Navigate to the prototype
+cd LearnSphere/prototype
+
+# Install dependencies
+npm install
+
+# Start the dev server
+npm run dev
+
+# Lint and build
+npm run lint
+npm run build
+```
 
 ## Developer Notes
 
