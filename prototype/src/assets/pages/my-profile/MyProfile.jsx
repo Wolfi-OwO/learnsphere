@@ -7,23 +7,34 @@ import {
   ProgressBar,
   Badge,
   Button,
+  Form,
 } from "react-bootstrap";
 import ActivityBoard from "../../components/core/activity-board/ActivityBoard.jsx";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import "./MyProfile.css"; // Add custom styles for better design
-import { NavLink } from "react-router-dom"; // Corrected import for NavLink
+import { NavLink, useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
-import { initialState, reducer } from "./MyProfileReducer.js";
+import { initialState, reducer, ACTIONS } from "./MyProfileReducer.js";
 
 
 
 function MyProfile({ isEdit = false }) {
   const [state, dispatch] = useReducer(reducer, initialState);
+  const navigate = useNavigate();
 
   const completionRate = Math.round(
     (state.lessonsCompleted / state.totalLessons) * 100,
   );
+
+  const updateField = (field) => (event) =>
+    dispatch({ type: ACTIONS.UPDATE_FIELD, field, value: event.target.value });
+
+  const handleSave = () => {
+    // In a full build this would persist to the backend; for the prototype the
+    // edited values already live in the reducer state, so we just leave edit mode.
+    navigate("/my-profile");
+  };
 
   return (
     <Container fluid className="d-flex flex-column page my-profile-page mt-4 flex-fill">
@@ -47,20 +58,42 @@ function MyProfile({ isEdit = false }) {
           </Col>
           <Col>
             <Container fluid>
-              <Row>
-                <Col>
-                  <Card.Title className="fs-4 fw-bold">
-                    {state.name}
-                  </Card.Title>
-                </Col>
-              </Row>
-              <Row>
-                <Col>
-                  <Card.Subtitle className="fs-6">
-                    {state.email}
-                  </Card.Subtitle>
-                </Col>
-              </Row>
+              {isEdit ? (
+                <Form>
+                  <Form.Group className="mb-2" controlId="profileName">
+                    <Form.Label className="mb-0 small text-muted">Name</Form.Label>
+                    <Form.Control
+                      value={state.name}
+                      onChange={updateField("name")}
+                    />
+                  </Form.Group>
+                  <Form.Group controlId="profileEmail">
+                    <Form.Label className="mb-0 small text-muted">Email</Form.Label>
+                    <Form.Control
+                      type="email"
+                      value={state.email}
+                      onChange={updateField("email")}
+                    />
+                  </Form.Group>
+                </Form>
+              ) : (
+                <>
+                  <Row>
+                    <Col>
+                      <Card.Title className="fs-4 fw-bold">
+                        {state.name}
+                      </Card.Title>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col>
+                      <Card.Subtitle className="fs-6">
+                        {state.email}
+                      </Card.Subtitle>
+                    </Col>
+                  </Row>
+                </>
+              )}
             </Container>
           </Col>
         </Row>
@@ -90,24 +123,56 @@ function MyProfile({ isEdit = false }) {
             </Col>
             <Col className="mb-2">
               <Card.Title>Statistics</Card.Title>
+              <Row xs={2} md={4} className="g-3 mb-3 text-center">
+                <Col>
+                  <div className="fs-3 fw-bold">{state.completedCourses}</div>
+                  <div className="text-muted small">Completed courses</div>
+                </Col>
+                <Col>
+                  <div className="fs-3 fw-bold">{state.ongoingCourses}</div>
+                  <div className="text-muted small">Ongoing courses</div>
+                </Col>
+                <Col>
+                  <div className="fs-3 fw-bold">{state.lessonsCompleted}</div>
+                  <div className="text-muted small">Lessons completed</div>
+                </Col>
+                <Col>
+                  <div className="fs-3 fw-bold">{state.role}</div>
+                  <div className="text-muted small">Role</div>
+                </Col>
+              </Row>
+              <div className="d-flex justify-content-between">
+                <span className="fw-bold">Lesson completion</span>
+                <span className="text-muted">
+                  {state.lessonsCompleted} / {state.totalLessons}
+                </span>
+              </div>
+              <ProgressBar
+                now={completionRate}
+                label={`${completionRate}%`}
+                variant="success"
+              />
             </Col>
           </Row>
         </Card.Body>
       </Card>
 
-      <Row className="mb-4">
-        <Col className="d-flex justify-content-end">
-          <Button>
-            Save
-          </Button>
-        </Col>
-      </Row>
+      {isEdit && (
+        <Row className="mb-4">
+          <Col className="d-flex justify-content-end gap-2">
+            <Button variant="secondary" onClick={() => navigate("/my-profile")}>
+              Cancel
+            </Button>
+            <Button onClick={handleSave}>Save</Button>
+          </Col>
+        </Row>
+      )}
     </Container>
   );
 }
 
 MyProfile.propTypes = {
-  iSEdit: PropTypes.bool
-}
+  isEdit: PropTypes.bool,
+};
 
 export default MyProfile;

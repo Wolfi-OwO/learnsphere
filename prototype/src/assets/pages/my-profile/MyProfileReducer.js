@@ -38,8 +38,18 @@ function generateWeekdayArrays(year) {
   return weekdaysArray;
 }
 
-export function reducer(state, action){
-    switch (action) {
-        
-    }
+export const ACTIONS = {
+  UPDATE_FIELD: "UPDATE_FIELD",
+  RESET: "RESET",
+};
+
+export function reducer(state, action) {
+  switch (action.type) {
+    case ACTIONS.UPDATE_FIELD:
+      return { ...state, [action.field]: action.value };
+    case ACTIONS.RESET:
+      return initialState;
+    default:
+      return state;
+  }
 }
