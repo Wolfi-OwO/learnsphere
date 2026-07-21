@@ -1,6 +1,6 @@
 # LearnSphere
 
-![Repo views](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/Wolfi-OwO/Wolfi-OwO/main/traffic/badges/learnsphere.json)
+![Repo visitors](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/Wolfi-OwO/Wolfi-OwO/main/traffic/badges/learnsphere.json)
 
 ## Overview
 
